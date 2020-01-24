@@ -1,27 +1,27 @@
+/* eslint-disable no-console */
 <template>
   <div class="container">
     <div>
       <logo />
-      <h1 class="title">
-        arapp-integrations
-      </h1>
-      <h2 class="subtitle">
-        arapp integration
-      </h2>
+      <h4 class="title">
+        Unity - Wallet Integration Check
+      </h4>
+      <h5 class="subtitle">
+        This is a test app to check deeplink connection in unity app
+      </h5>
+      <div>
+        <p class="mt-2 text-gray-600">
+          Method: {{ method }}
+          Details: {{ details }}
+        </p>
+      </div>
       <div class="links">
         <a
-          href="https://nuxtjs.org/"
+          href="com.geomotiongames.co3://co3walletcallback?tx=0x25ce3d2184b3bb4dab628296fa35055e3e0e58f58df4ca2122eb4bbcdf8c641e"
           target="_blank"
           class="button--green"
         >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
+          Call AR APP
         </a>
       </div>
     </div>
@@ -29,11 +29,32 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Logo from '~/components/Logo.vue'
 
 export default {
   components: {
     Logo
+  },
+  computed: {
+    ...mapState('deeplink', {
+      method (state) {
+        // eslint-disable-next-line no-console
+        console.log(state)
+        return state.method
+      },
+      details (state) {
+        return state.details
+      }
+    })
+  },
+  created () {
+    // eslint-disable-next-line no-console
+    console.log(this)
+    if (this.$route.query.method && this.$route.query.details) {
+      this.$store.commit('deeplink/setMethod', this.$route.query.method)
+      this.$store.commit('deeplink/setDetails', this.$route.query.details)
+    }
   }
 }
 </script>
@@ -58,7 +79,7 @@ export default {
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
   font-weight: 300;
-  font-size: 100px;
+  font-size: 60px;
   color: #35495e;
   letter-spacing: 1px;
 }
